@@ -13,6 +13,11 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    role: {
+        type: String,
+        enum: ["employee", "admin", "super-admin"],
+        required: true
+    },
     designation: {
         type: String,
     }
