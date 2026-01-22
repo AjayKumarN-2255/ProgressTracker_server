@@ -1,7 +1,7 @@
 const { app, Loader } = require('./app');
 
-(async () => {
-    await Loader();
+(() => {
+    Loader();
 
     const PORT = process.env.PORT || 4000;
 

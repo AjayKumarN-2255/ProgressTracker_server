@@ -8,7 +8,7 @@ const { bodyParserHandler,
 } = require('../shared/error/errorHandler');
 const { routerLoader } = require('./routerLoader');
 
-async function expressLoader(app) {
+function expressLoader(app) {
 
     app.use(cors({
         origin: process.env.FRONT_END_URL,
