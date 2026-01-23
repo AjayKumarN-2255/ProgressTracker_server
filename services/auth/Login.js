@@ -6,7 +6,8 @@ const { generateToken } = require('../../utils/jwt');
 
 async function Login(payLoad) {
     const { email, password } = payLoad;
-    const user = await User.findOne({ email },"email password  _id name role designation");
+    const user = await User.findOne({ email }, "email password  _id name role designation");
+
     if (!user) {
         throw new APIError(STATUS_CODES.UNAUTHORIZED, 'Invalid credentials');
     }

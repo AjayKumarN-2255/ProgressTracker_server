@@ -16,6 +16,16 @@ const reportSchema = new mongoose.Schema({
         ref: 'Project',
         required: true
     },
+    month: {
+        type: Number, 
+        required: true,
+        min: 1,
+        max: 12
+    },
+    year: {
+        type: Number,
+        required: true
+    },
     milestones: [contentValueSchema],
     patternsToAddress: [contentValueSchema],
     memos: [contentValueSchema]
