@@ -2,10 +2,11 @@ const express = require('express');
 const router = express.Router();
 const { authenticate, authorizRole } = require('../middleware');
 const { fourOhFiveHandler } = require('../shared/error/errorHandler');
-const { createProject, editProject, deleteProject } = require('../controllers/project');
+const { createProject, editProject, deleteProject, getAllProjects } = require('../controllers/project');
 
 router
     .route('/')
+    .get(authenticate, authorizRole('admin', 'super-admin'), getAllProjects)
     .post(authenticate, authorizRole('admin', 'super-admin'), createProject)
     .all(fourOhFiveHandler);
 
