@@ -1,6 +1,6 @@
 const Review = require('../../models/Review');
 
-async function getReviews(userId, rId) {
+async function getReviews(userId, rId, status) {
     const filter = {};
 
     if (userId) {
@@ -9,6 +9,10 @@ async function getReviews(userId, rId) {
 
     if (rId) {
         filter._id = rId;
+    }
+
+    if (status) {
+        filter.status = status;
     }
 
     const review = await Review.find(filter)

@@ -5,9 +5,9 @@ const reviewService = require('../../services/review');
 async function getReviews(req, res, next) {
     try {
 
-        const { userId } = req.query;
-        const { rId } = req.query;
-        const reviews = await reviewService.getReviews(userId, rId);
+        const { userId, status, rId } = req.query;
+
+        const reviews = await reviewService.getReviews(userId, rId, status);
 
         res.status(STATUS_CODES.CREATED).json({
             success: true,
