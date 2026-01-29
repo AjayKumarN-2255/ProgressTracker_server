@@ -21,7 +21,7 @@ async function addReview(req, res, next) {
 
         res.status(STATUS_CODES.CREATED).json({
             success: true,
-            message: 'Review created successful'
+            message: 'Review created successfully'
         });
 
     } catch (error) {

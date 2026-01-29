@@ -11,13 +11,18 @@ const reportSchema = new mongoose.Schema({
         ref: 'User',
         required: true
     },
+    reviewerId: {
+        type: mongoose.Schema.ObjectId,
+        ref: 'Review',
+        required: true
+    },
     projectId: {
         type: mongoose.Schema.ObjectId,
         ref: 'Project',
         required: true
     },
     month: {
-        type: Number, 
+        type: Number,
         required: true,
         min: 1,
         max: 12
