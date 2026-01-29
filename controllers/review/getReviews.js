@@ -6,7 +6,8 @@ async function getReviews(req, res, next) {
     try {
 
         const { userId } = req.query;
-        const reviews = await reviewService.getReviews(userId);
+        const { rId } = req.query;
+        const reviews = await reviewService.getReviews(userId, rId);
 
         res.status(STATUS_CODES.CREATED).json({
             success: true,
