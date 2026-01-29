@@ -6,7 +6,7 @@ const contentValueSchema = new mongoose.Schema({
 }, { _id: false });
 
 const reportSchema = new mongoose.Schema({
-    userId: {
+    employeeId: {
         type: mongoose.Schema.ObjectId,
         ref: 'User',
         required: true
@@ -21,15 +21,9 @@ const reportSchema = new mongoose.Schema({
         ref: 'Project',
         required: true
     },
-    month: {
-        type: Number,
+    reviewMonth: {
+        type: String,
         required: true,
-        min: 1,
-        max: 12
-    },
-    year: {
-        type: Number,
-        required: true
     },
     milestones: [contentValueSchema],
     patternsToAddress: [contentValueSchema],
