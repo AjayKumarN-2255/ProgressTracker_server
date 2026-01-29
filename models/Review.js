@@ -6,13 +6,12 @@ const reviewSchema = new mongoose.Schema({
         ref: 'User',
         required: true,
     },
-    employee: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'User',
-            required: true,
-        },
-    ],
+    employee:
+    {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true,
+    },
     project: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Project',
