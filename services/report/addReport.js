@@ -26,7 +26,7 @@ async function addReport(reviewId, payLoad) {
         employeeId: payLoad.employeeId,
         reviewerId: payLoad.reviewerId,
         projectId: payLoad.projectId,
-        reviewMonth: payLoad.reviewMonth,
+        reviewMonth: new Date(payLoad.reviewMonth),
         milestones: payLoad.milestones,
         patternsToAddress: payLoad.patternsToAddress,
         memos: payLoad.patternsToAddress

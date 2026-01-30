@@ -22,7 +22,7 @@ const reportSchema = new mongoose.Schema({
         required: true
     },
     reviewMonth: {
-        type: String,
+        type: Date,
         required: true,
     },
     milestones: [contentValueSchema],

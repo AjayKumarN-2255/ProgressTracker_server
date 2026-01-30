@@ -27,7 +27,7 @@ async function addReview(payLoad) {
         reviewer,
         employee: empId,
         project,
-        reviewMonth,
+        reviewMonth: new Date(reviewMonth),
         status: 'assigned',
     }));
 
