@@ -7,17 +7,17 @@ const contentValueSchema = new mongoose.Schema({
 
 const reportSchema = new mongoose.Schema({
     employeeId: {
-        type: mongoose.Schema.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         required: true
     },
     reviewerId: {
-        type: mongoose.Schema.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'Review',
         required: true
     },
     projectId: {
-        type: mongoose.Schema.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'Project',
         required: true
     },
