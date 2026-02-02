@@ -13,7 +13,7 @@ const reportSchema = new mongoose.Schema({
     },
     reviewerId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Review',
+        ref: 'User',
         required: true
     },
     projectId: {
