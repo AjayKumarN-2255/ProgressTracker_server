@@ -6,7 +6,7 @@ const { getDateRange } = require('../../utils/getDateRange');
 
 async function getReport(query) {
 
-    const { userId, type, year, value } = query;
+    const { userId, type, year, value, pId } = query;
 
     const dateRange = getDateRange({ type, year, value });
 
@@ -23,7 +23,8 @@ async function getReport(query) {
                 $gte: startDate,
                 $lte: endDate
             }
-        })
+        }),
+        ...(pId ? { projectId: pId } : {}),
     }
 
     const reports = await Report.find(filter)

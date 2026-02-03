@@ -3,7 +3,7 @@ const { STATUS_CODES } = require('../../shared/constants/statusCodes');
 
 async function getReport(req, res, next) {
 
-    const { userId, type, year, value } = req.query;
+    const { userId, type, year, value, pId } = req.query;
 
     try {
 
@@ -15,7 +15,7 @@ async function getReport(req, res, next) {
             });
         }
 
-        const query = { userId, type, year, value };
+        const query = { userId, type, year, value, pId };
 
         const reports = await reportService.getReport(query);
 
