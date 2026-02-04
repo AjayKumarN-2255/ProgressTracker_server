@@ -3,11 +3,11 @@ const { STATUS_CODES } = require('../../shared/constants/statusCodes');
 
 async function getReport(req, res, next) {
 
-    const { userId, type, year, value, pId } = req.query;
-
+    const { userId, type, year, value, pId, rId } = req.query;
+    
     try {
 
-        if (!userId) {
+        if (!userId && !rId) {
             return res.status(STATUS_CODES.OK).json({
                 success: true,
                 message: 'Select a user to view reports',
@@ -15,7 +15,7 @@ async function getReport(req, res, next) {
             });
         }
 
-        const query = { userId, type, year, value, pId };
+        const query = { userId, type, year, value, pId, rId };
 
         const reports = await reportService.getReport(query);
 

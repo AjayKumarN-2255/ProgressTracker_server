@@ -6,7 +6,7 @@ const { createProject, editProject, deleteProject, getAllProjects } = require('.
 
 router
     .route('/')
-    .get(authenticate, authorizRole('admin', 'super-admin'), getAllProjects)
+    .get(authenticate, authorizRole('employee', 'admin', 'super-admin'), getAllProjects)
     .post(authenticate, authorizRole('admin', 'super-admin'), createProject)
     .all(fourOhFiveHandler);
 

@@ -3,20 +3,29 @@ const { STATUS_CODES } = require('../../shared/constants/statusCodes');
 const Report = require('../../models/Report');
 const { getDateRange } = require('../../utils/getDateRange');
 
-
 async function getReport(query) {
 
-    const { userId, type, year, value, pId } = query;
+    const { userId, type, year, value, pId, rId } = query;
 
-    const dateRange = getDateRange({ type, year, value });
+    let startDate;
+    let endDate;
 
-    if (!dateRange) {
-        throw new APIError(STATUS_CODES.BAD_REQUEST, 'Invalid date filter parameters')
+    if (type) {
+        const dateRange = getDateRange({ type, year, value });
+
+        if (!dateRange) {
+            throw new APIError(
+                STATUS_CODES.BAD_REQUEST,
+                'Invalid date filter parameters'
+            );
+        }
+
+        startDate = dateRange.startDate;
+        endDate = dateRange.endDate;
     }
 
-    const { startDate, endDate } = dateRange;
-
     const filter = {
+        ...(rId ? { _id: rId } : {}),
         ...(userId ? { employeeId: userId } : {}),
         ...(startDate && endDate && {
             reviewMonth: {
@@ -25,7 +34,7 @@ async function getReport(query) {
             }
         }),
         ...(pId ? { projectId: pId } : {}),
-    }
+    };
 
     const reports = await Report.find(filter)
         .populate('employeeId', 'name')
@@ -38,4 +47,4 @@ async function getReport(query) {
 
 module.exports = {
     getReport
-}
+};
