@@ -6,6 +6,14 @@ async function exportReport(req, res, next) {
 
     const { userId, type, year, value, pId } = req.query;
 
+    const typeNameMap = {
+        CURRENT: "current_month_report",
+        MONTH: "monthly_report",
+        QUARTER: "quarterly_report",
+        HALF: "halfyearly_report",
+        YEAR: "yearly_report"
+    }
+
     if (!userId) {
         return next(new APIError(STATUS_CODES.BAD_REQUEST, 'Select a user to download reports'));
     }
@@ -13,7 +21,7 @@ async function exportReport(req, res, next) {
     try {
         const query = { userId, type, year, value, pId };
         // ExcelJS Workbook
-        const workbook = await reportService.exportReport(query);
+        const { user, workbook } = await reportService.exportReport(query);
 
         // IMPORTANT HEADERS
         res.setHeader(
@@ -23,7 +31,7 @@ async function exportReport(req, res, next) {
 
         res.setHeader(
             'Content-Disposition',
-            'attachment; filename=reports.xlsx'
+            `attachment; filename=${user?.name || user}_${typeNameMap[type]}.xlsx`
         );
 
         // WRITE EXCEL TO RESPONSE

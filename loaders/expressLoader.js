@@ -12,7 +12,8 @@ function expressLoader(app) {
 
     app.use(cors({
         origin: process.env.FRONT_END_URL,
-        credentials: true
+        credentials: true,
+        exposedHeaders: ['Content-Disposition']
     }));
 
     app.use(express.json());
