@@ -28,6 +28,8 @@ async function getNote(req, res, next) {
         const notes = await Note.find({ type }).sort({ createdAt: -1 });
 
         res.status(STATUS_CODES.OK).json({
+            success: true,
+            message:"notes fetched successfully",
             data: notes
         });
 

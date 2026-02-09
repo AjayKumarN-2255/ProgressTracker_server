@@ -25,6 +25,7 @@ async function deleteNote(req, res, next) {
         }
 
         res.status(STATUS_CODES.OK).json({
+            success: true,
             message: 'Note deleted successfully'
         });
 

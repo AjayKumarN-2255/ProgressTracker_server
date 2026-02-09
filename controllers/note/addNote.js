@@ -31,6 +31,7 @@ async function addNote(req, res, next) {
         });
 
         res.status(STATUS_CODES.CREATED).json({
+            success: true,
             message: 'Note added successfully',
             data: note
         });
