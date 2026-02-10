@@ -1,5 +1,6 @@
 const { APIError } = require('../../shared/error/APIError');
 const { STATUS_CODES } = require('../../shared/constants/statusCodes');
+const Report = require('../../models/Report');
 const Note = require('../../models/Note');
 
 async function deleteNote(req, res, next) {
@@ -11,6 +12,21 @@ async function deleteNote(req, res, next) {
                 STATUS_CODES.BAD_REQUEST,
                 'Note id is required'
             ))
+        }
+
+        const isNoteExist = await Report.exists({
+            $or: [
+                { 'milestones.noteId': id },
+                { 'patternsToAddress.noteId': id },
+                { 'memos.noteId': id }
+            ]
+        });
+
+        if (isNoteExist) {
+            return next(new APIError(
+                STATUS_CODES.BAD_REQUEST,
+                'This note is already associated with one or more reports.'
+            ));
         }
 
         const deletedNote = await Note.findByIdAndDelete(id);
