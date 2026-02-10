@@ -134,7 +134,109 @@ async function getReport(query, isNeedGrouping = false) {
             }
         },
         { $unwind: '$project' },
-
+        {
+            $lookup: {
+                from: 'notes',
+                let: {
+                    noteIds: {
+                        $setUnion: [
+                            '$milestones.noteId',
+                            '$patternsToAddress.noteId',
+                            '$memos.noteId'
+                        ]
+                    }
+                },
+                pipeline: [
+                    {
+                        $match: {
+                            $expr: { $in: ['$_id', '$$noteIds'] }
+                        }
+                    },
+                    {
+                        $project: {
+                            _id: 1,
+                            text: 1
+                        }
+                    }
+                ],
+                as: 'notes'
+            }
+        },
+        {
+            $addFields: {
+                milestones: {
+                    $map: {
+                        input: '$milestones',
+                        as: 'm',
+                        in: {
+                            noteId: {
+                                $arrayElemAt: [
+                                    {
+                                        $filter: {
+                                            input: '$notes',
+                                            as: 'n',
+                                            cond: { $eq: ['$$n._id', '$$m.noteId'] }
+                                        }
+                                    },
+                                    0
+                                ]
+                            },
+                            value: '$$m.value'
+                        }
+                    }
+                }
+            }
+        },
+        {
+            $addFields: {
+                patternsToAddress: {
+                    $map: {
+                        input: '$patternsToAddress',
+                        as: 'p',
+                        in: {
+                            noteId: {
+                                $arrayElemAt: [
+                                    {
+                                        $filter: {
+                                            input: '$notes',
+                                            as: 'n',
+                                            cond: { $eq: ['$$n._id', '$$p.noteId'] }
+                                        }
+                                    },
+                                    0
+                                ]
+                            },
+                            value: '$$p.value'
+                        }
+                    }
+                }
+            }
+        },
+        {
+            $addFields: {
+                memos: {
+                    $map: {
+                        input: '$memos',
+                        as: 'mm',
+                        in: {
+                            noteId: {
+                                $arrayElemAt: [
+                                    {
+                                        $filter: {
+                                            input: '$notes',
+                                            as: 'n',
+                                            cond: { $eq: ['$$n._id', '$$mm.noteId'] }
+                                        }
+                                    },
+                                    0
+                                ]
+                            },
+                            value: '$$mm.value'
+                        }
+                    }
+                }
+            }
+        },
         {
             $project: {
                 _id: 1,
@@ -147,7 +249,6 @@ async function getReport(query, isNeedGrouping = false) {
                 project: 1
             }
         },
-
         /* GROUP BY MONTH */
         {
             $group: {

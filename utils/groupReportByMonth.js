@@ -94,11 +94,11 @@ function addBodyRow(worksheet, report) {
         milestoneTotal += m.value || 0;
         patternTotal += p.value || 0;
         memoTotal += memo.value || 0;
-
+    
         worksheet.addRow([
-            m.content || "", m.value ?? "",
-            p.content || "", p.value ?? "",
-            memo.content || "", memo.value ?? ""
+            m?.noteId?.text || "", m.value ?? "",
+            p?.noteId?.text || "", p.value ?? "",
+            memo?.noteId?.text || "", memo.value ?? ""
         ]);
     }
     return {

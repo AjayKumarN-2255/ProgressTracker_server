@@ -39,6 +39,7 @@ async function exportReport(req, res, next) {
         res.end();
 
     } catch (error) {
+        console.log(error)
         next(error)
     }
 }
