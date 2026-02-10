@@ -29,7 +29,7 @@ async function addReport(reviewId, payLoad) {
         reviewMonth: new Date(payLoad.reviewMonth),
         milestones: payLoad.milestones,
         patternsToAddress: payLoad.patternsToAddress,
-        memos: payLoad.patternsToAddress
+        memos: payLoad.memos
     });
     review.status = 'completed';
     await review.save();
