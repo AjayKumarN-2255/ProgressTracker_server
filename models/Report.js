@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const contentValueSchema = new mongoose.Schema({
-    content: { type: String, required: true },
+    noteId: { type: mongoose.Schema.Types.ObjectId, ref: 'Note', required: true },
     value: { type: Number, required: true }
 }, { _id: false });
 

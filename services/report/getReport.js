@@ -42,6 +42,10 @@ async function getReport(query, isNeedGrouping = false) {
             .populate('employeeId', 'name')
             .populate('reviewerId', 'name')
             .populate('projectId', 'name')
+
+            .populate('milestones.noteId', 'text')
+            .populate('patternsToAddress.noteId', 'text')
+            .populate('memos.noteId', 'text')
             .sort({ reviewMonth: -1 });
 
         return reports;
@@ -130,7 +134,7 @@ async function getReport(query, isNeedGrouping = false) {
             }
         },
         { $unwind: '$project' },
-        
+
         {
             $project: {
                 _id: 1,
