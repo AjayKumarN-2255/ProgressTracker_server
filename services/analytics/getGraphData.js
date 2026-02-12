@@ -4,8 +4,8 @@ const mongoose = require('mongoose');
 
 async function getMonthWiseData(userId, month, year) {
 
-    const startDate = new Date(year, month, 1);
-    const endDate = new Date(year, month + 1, 1);
+    const startDate = new Date(Date.UTC(year, Number(month), 1));
+    const endDate = new Date(Date.UTC(year, Number(month) + 1, 1));
 
     const report = await Report.aggregate(
         [
@@ -88,8 +88,63 @@ async function getMonthWiseData(userId, month, year) {
     return report;
 }
 
-async function getYearWiseData(year) {
-    return "year data";
+async function getYearWiseData(userId, year) {
+    const startDate = new Date(Date.UTC(year, 0, 1));
+    const endDate = new Date(Date.UTC(Number(year) + 1, 0, 1));
+
+    const report = await Report.aggregate([
+        {
+            $match: {
+                employeeId: new mongoose.Types.ObjectId(userId),
+                reviewMonth: { $gte: startDate, $lt: endDate }
+            }
+        },
+        {
+            $addFields: {
+                totalScore: {
+                    $add: [
+                        { $sum: "$milestones.value" },
+                        { $sum: "$patternsToAddress.value" },
+                        { $sum: "$memos.value" }
+                    ]
+                }
+            }
+        },
+        {
+            $lookup: {
+                from: 'users',
+                let: { empId: '$employeeId' },
+                pipeline: [
+                    {
+                        $match: {
+                            $expr: { $eq: ['$_id', '$$empId'] }
+                        }
+                    },
+                    {
+                        $project: {
+                            _id: 0,
+                            name: 1
+                        }
+                    }
+                ],
+                as: 'employee'
+            }
+        },
+        {
+            $unwind: '$employee'
+        },
+        {
+            $group: {
+                _id: '$reviewMonth',
+                employeeName: { $first: '$employee.name' },
+                avg_project_score: {
+                    $avg: '$totalScore'
+                }
+            }
+        }
+    ]).sort({ _id: 1 });
+
+    return report;
 }
 
 module.exports = {
