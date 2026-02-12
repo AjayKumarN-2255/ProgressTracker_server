@@ -4,6 +4,7 @@ const projectRouter = require('../routes/projectRouter');
 const reviewRouter = require('../routes/reviewRouter');
 const reportRouter = require('../routes/reportRouter');
 const noteRouter = require('../routes/noteRouter');
+const analyticRouter = require('../routes/analyticsRouter');
 
 function routerLoader(app) {
     app.use('/api/auth', authRouter);
@@ -12,6 +13,7 @@ function routerLoader(app) {
     app.use('/api/review', reviewRouter);
     app.use('/api/report', reportRouter);
     app.use('/api/project', projectRouter);
+    app.use('/api/analytics', analyticRouter);
 }
 
 module.exports = {
