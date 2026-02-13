@@ -63,9 +63,9 @@ async function getMonthWiseData(userId, month, year) {
                 $addFields: {
                     totalScore: {
                         $add: [
-                            { $sum: "$milestones.value" },
-                            { $sum: "$patternsToAddress.value" },
-                            { $sum: "$memos.value" }
+                            { $ifNull: [{ $avg: "$milestones.value" }, 0] },
+                            { $ifNull: [{ $avg: "$patternsToAddress.value" }, 0] },
+                            { $ifNull: [{ $avg: "$memos.value" }, 0] }
                         ]
                     }
                 }
@@ -103,9 +103,9 @@ async function getYearWiseData(userId, year) {
             $addFields: {
                 totalScore: {
                     $add: [
-                        { $sum: "$milestones.value" },
-                        { $sum: "$patternsToAddress.value" },
-                        { $sum: "$memos.value" }
+                        { $ifNull: [{ $avg: "$milestones.value" }, 0] },
+                        { $ifNull: [{ $avg: "$patternsToAddress.value" }, 0] },
+                        { $ifNull: [{ $avg: "$memos.value" }, 0] }
                     ]
                 }
             }
