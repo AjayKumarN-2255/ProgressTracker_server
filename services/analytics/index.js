@@ -1,6 +1,7 @@
-const { getMonthWiseData, getYearWiseData } = require('./getGraphData');
+const { getMonthWiseData, getYearWiseData, getProjectWiseData } = require('./getGraphData');
 
 module.exports = {
+    getYearWiseData,
     getMonthWiseData,
-    getYearWiseData
+    getProjectWiseData
 }

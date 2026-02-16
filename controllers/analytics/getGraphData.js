@@ -5,19 +5,19 @@ const analyticService = require('../../services/analytics');
 
 async function getGraphData(req, res, next) {
 
-    const { userId, month, year } = req.query;
+    const { userId, month, year, pId } = req.query;
 
 
     if (!userId) {
         return next(new APIError(STATUS_CODES.BAD_REQUEST, "select a user"));
     }
 
-    if (!year) {
+    if (!year && !pId) {
         return next(new APIError(STATUS_CODES.BAD_REQUEST, "select a year"));
     }
 
     const yearNum = Number(year);
-    if (!Number.isInteger(yearNum) || yearNum < 2000 || yearNum > 2100) {
+    if (!pId && !Number.isInteger(yearNum) || yearNum < 2000 || yearNum > 2100) {
         return next(
             new APIError(STATUS_CODES.BAD_REQUEST, "invalid year")
         );
@@ -38,7 +38,9 @@ async function getGraphData(req, res, next) {
     try {
 
         let graphData;
-        if (month) {
+        if (pId) {
+            graphData = await analyticService.getProjectWiseData(userId, pId);
+        } else if (month) {
             graphData = await analyticService.getMonthWiseData(userId, month, year);
         } else {
             graphData = await analyticService.getYearWiseData(userId, year);

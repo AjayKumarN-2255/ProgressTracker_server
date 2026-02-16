@@ -11,7 +11,7 @@ async function getReport(query, isNeedGrouping = false) {
     let startDate;
     let endDate;
 
-    if (type) {
+    if (type && !pId) {
         const dateRange = getDateRange({ type, year, value });
 
         if (!dateRange) {
@@ -29,7 +29,7 @@ async function getReport(query, isNeedGrouping = false) {
         const filter = {
             ...(rId ? { _id: rId } : {}),
             ...(userId ? { employeeId: userId } : {}),
-            ...(startDate && endDate && {
+            ...(!pId && startDate && endDate && {
                 reviewMonth: {
                     $gte: startDate,
                     $lte: endDate

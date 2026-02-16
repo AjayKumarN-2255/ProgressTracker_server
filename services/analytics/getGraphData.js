@@ -1,4 +1,7 @@
 const Report = require('../../models/Report');
+const Project = require('../../models/Project');
+const { APIError } = require('../../shared/error/APIError');
+const { STATUS_CODES } = require('../../shared/constants/statusCodes');
 const mongoose = require('mongoose');
 
 
@@ -147,6 +150,47 @@ async function getYearWiseData(userId, year) {
     return report;
 }
 
+async function getProjectWiseData(userId, pId) {
+
+    const project = await Project.findById(pId);
+    if (!project) {
+        throw new APIError(STATUS_CODES.NOT_FOUND, "selected project not found");
+    }
+
+    const report = await Report.aggregate([
+        {
+            $match: {
+                employeeId: new mongoose.Types.ObjectId(userId),
+                projectId: new mongoose.Types.ObjectId(pId)
+            }
+        },
+        {
+            $addFields: {
+                totalScore: {
+                    $add: [
+                        { $ifNull: [{ $avg: "$milestones.value" }, 0] },
+                        { $ifNull: [{ $avg: "$patternsToAddress.value" }, 0] },
+                        { $ifNull: [{ $avg: "$memos.value" }, 0] }
+                    ]
+                }
+            }
+        },
+        {
+            $project: {
+                reviewMonth: 1,
+                totalScore: 1
+            }
+        },
+        {
+            $sort: { reviewMonth: 1 } 
+        }
+    ])
+    
+    return report;
+}
+
 module.exports = {
-    getMonthWiseData, getYearWiseData
+    getYearWiseData,
+    getMonthWiseData,
+    getProjectWiseData
 }
