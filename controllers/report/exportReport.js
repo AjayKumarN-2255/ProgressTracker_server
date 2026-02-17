@@ -31,7 +31,7 @@ async function exportReport(req, res, next) {
 
         res.setHeader(
             'Content-Disposition',
-            `attachment; filename=${user?.name || user}_${typeNameMap[type]}.xlsx`
+            `attachment; filename=${user?.name || "user"}_${typeNameMap[type]}.xlsx`
         );
 
         // WRITE EXCEL TO RESPONSE
