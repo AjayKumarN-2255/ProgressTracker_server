@@ -20,6 +20,10 @@ const userSchema = new mongoose.Schema({
     },
     designation: {
         type: String,
+    },
+    profile: {
+        type: String,
+        default: ""
     }
 }, { timestamps: true });
 

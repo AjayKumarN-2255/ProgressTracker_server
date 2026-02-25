@@ -1,6 +1,7 @@
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const express = require('express');
+const path = require('path');
 require('dotenv').config();
 const { bodyParserHandler,
     fourOhFourHandler,
@@ -23,6 +24,7 @@ function expressLoader(app) {
 
     routerLoader(app);
 
+    app.use('/uploads/profile', express.static(path.join(__dirname, '..', 'uploads/profile')));
     app.use(fourOhFourHandler);
     app.use(globalErrorHandler);
 }
