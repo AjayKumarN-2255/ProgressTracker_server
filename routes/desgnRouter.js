@@ -2,11 +2,21 @@ const express = require('express');
 const router = express.Router();
 const { fourOhFiveHandler } = require('../shared/error/errorHandler');
 const { authenticate, authorizRole } = require('../middleware');
-const { addDesignation } = require('../controllers/designation');
+const { addDesignation, deleteDesignation, getDesignationByRole } = require('../controllers/designation');
+
+router
+    .route('/')
+    .get(authenticate, authorizRole('admin', 'super-admin'), getDesignationByRole)
+    .all(fourOhFiveHandler);
 
 router
     .route('/')
     .post(authenticate, authorizRole('admin', 'super-admin'), addDesignation)
+    .all(fourOhFiveHandler);
+
+router
+    .route('/:id')
+    .delete(authenticate, authorizRole('admin', 'super-admin'), deleteDesignation)
     .all(fourOhFiveHandler);
 
 
