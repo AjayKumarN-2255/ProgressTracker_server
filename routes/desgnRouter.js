@@ -7,10 +7,6 @@ const { addDesignation, deleteDesignation, getDesignationByRole } = require('../
 router
     .route('/')
     .get(authenticate, authorizRole('admin', 'super-admin'), getDesignationByRole)
-    .all(fourOhFiveHandler);
-
-router
-    .route('/')
     .post(authenticate, authorizRole('admin', 'super-admin'), addDesignation)
     .all(fourOhFiveHandler);
 
