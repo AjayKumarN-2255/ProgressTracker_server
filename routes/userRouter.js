@@ -26,7 +26,7 @@ router
 
 router
     .route('/:id')
-    .delete(authenticate, authorizRole('admin', 'super-admin'), DeleteUser)
+    .delete(authenticate, authorizRole('super-admin'), DeleteUser)
     .patch(authenticate, authorizRole('super-admin'), EditUser)
     .all(fourOhFiveHandler);
 
