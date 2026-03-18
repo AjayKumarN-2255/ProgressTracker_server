@@ -3,7 +3,7 @@ const router = express.Router();
 const { authenticate, authorizRole } = require('../middleware');
 const { fourOhFiveHandler } = require('../shared/error/errorHandler');
 const { upload } = require('../utils/multer');
-const { AddUser, changePassword, getUser, addSuperAdmin, updateProfileImage } = require('../controllers/user');
+const { AddUser, changePassword, getUser, addSuperAdmin, updateProfileImage, EditUser } = require('../controllers/user');
 
 router
     .route('/')
@@ -20,12 +20,18 @@ router
     .all(fourOhFiveHandler);
 
 router
+    .route('/change-password/:id')
+    .patch(authenticate, authorizRole('super-admin', 'admin', 'employee'), changePassword)
+    .all(fourOhFiveHandler);
+
+router
+    .route('/:id')
+    .patch(authenticate, authorizRole('admin', 'super-admin'), EditUser)
+    .all(fourOhFiveHandler);
+
+router
     .route('/add-super-admin')
     .post(addSuperAdmin);
 
-router
-    .route('/change-password/:id')
-    .patch(authenticate, changePassword)
-    .all(fourOhFiveHandler);
 
 module.exports = router;
