@@ -7,7 +7,6 @@ async function EditUser(userId, payLoad) {
     if (!Object.keys(payLoad).length) {
         throw new APIError(STATUS_CODES.BAD_REQUEST, "No data to update");
     }
-
     const allowedFields = ['name', 'email', 'designation'];
     const filteredPayload = {};
 
@@ -16,6 +15,8 @@ async function EditUser(userId, payLoad) {
             filteredPayload[key] = payLoad[key];
         }
     });
+
+    console.log(filteredPayload)
 
     const updatedUser = await User.findByIdAndUpdate(
         userId,
