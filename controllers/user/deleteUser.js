@@ -13,10 +13,10 @@ async function DeleteUser(req, res, next) {
         if (!user) {
             return next(new APIError(STATUS_CODES.NOT_FOUND, "User doesn't exist"));
         }
-
-        if (user?._role === "employee") {
-            await Review.deleteMany({ employee: user._id });
-            await Report.deleteMany({ employeeId: user._id });
+        
+        if (user?.role === "employee") {
+            await Review.deleteMany({ employee: id });
+            await Report.deleteMany({ employeeId: id });
         }
 
         await User.findByIdAndDelete(id);
